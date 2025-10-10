@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <template id="support_form" name="Support Form">
+    <t t-call="website.layout">
+      <div class="container">
+        <h1>Submit a support ticket</h1>
+        <form action="/support/create" method="post" class="s_website_form">
+          <div class="form-group">
+            <label>Subject</label>
+            <input name="name" class="form-control"/>
+          </div>
+          <div class="form-group">
+            <label>Description</label>
+            <textarea name="description" class="form-control"/>
+          </div>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+      </div>
+    </t>
+  </template>
+
+  <template id="support_thanks" name="Support Thanks">
+    <t t-call="website.layout">
+      <div class="container"><h1>Thanks! Ticket submitted.</h1></div>
+    </t>
+  </template>
+</odoo>
