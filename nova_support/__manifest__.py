@@ -1,19 +1,28 @@
 {
     "name": "Nova Support",
     "version": "17.0.1.0.0",
-    "category": "Helpdesk",
-    "summary": "Public ticket form + Helpdesk extensions for Nova Tile and Stone",
-    "author": "Nova Tile and Stone",
-    "website": "",
-    "license": "LGPL-3",
-    "depends": ["helpdesk", "website", "portal", "mail"],
-    "data": [
-        "security/security.xml",
-        "views/templates.xml",
-        "data/website_menu.xml",
-        # "data/mail_templates.xml",  # add back later if you like
-        # "views/helpdesk_views.xml", # add back later
+    "summary": "Customer portal to submit and track support tickets",
+    "category": "Website/Customer Support",
+    "depends": [
+        "base",
+        "mail",
+        "portal",
+        "website",
+        "web"
     ],
-    "installable": True,
-    "application": True,
+    "data": [
+        "security/nova_support_security.xml",
+        "security/ir.model.access.csv",
+        "data/sequence.xml",
+        "data/mail_template.xml",
+        "views/support_ticket_views.xml",
+        "views/portal_templates.xml",
+        "views/portal_menu.xml"
+    ],
+    "assets": {
+        "web.assets_frontend": [
+        ]
+    },
+    "application": true,
+    "license": "LGPL-3"
 }

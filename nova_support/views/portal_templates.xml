@@ -1,0 +1,110 @@
+<odoo>
+  <template id="portal_layout" inherit_id="portal.portal_layout">
+    <xpath expr="//t[@t-set='breadcrumbs']" position="inside">
+      <li class="breadcrumb-item"><a href="/my">My Account</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Support</li>
+    </xpath>
+  </template>
+
+  <template id="portal_my_tickets" name="My Support Tickets">
+    <t t-call="portal.portal_layout">
+      <div class="container my-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h2>My Support Tickets</h2>
+          <a class="btn btn-primary" href="/my/support/tickets/new">New Ticket</a>
+        </div>
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Subject</th>
+              <th>Status</th>
+              <th>Priority</th>
+              <th>Created</th>
+            </tr>
+          </thead>
+          <tbody>
+            <t t-foreach="tickets" t-as="t">
+              <tr>
+                <td><a t-att-href="'/my/support/tickets/%s' % t.id"><t t-esc="t.name"/></a></td>
+                <td><t t-esc="t.subject"/></td>
+                <td><span class="badge" t-attf-class="badge {{'text-bg-success' if t.state=='done' else 'text-bg-secondary'}}"><t t-esc="t.state"/></span></td>
+                <td><t t-esc="dict(t._fields['priority'].selection).get(t.priority)"/></td>
+                <td><t t-esc="t.create_date"/></td>
+              </tr>
+            </t>
+          </tbody>
+        </table>
+      </div>
+    </t>
+  </template>
+
+  <template id="portal_ticket_detail" name="Ticket Detail">
+    <t t-call="portal.portal_layout">
+      <div class="container my-4">
+        <a href="/my/support/tickets" class="btn btn-light mb-3">← Back</a>
+        <h2><t t-esc="ticket.name"/> — <t t-esc="ticket.subject"/></h2>
+        <p><b>Status:</b> <t t-esc="ticket.state"/> · <b>Priority:</b> <t t-esc="ticket.priority"/></p>
+        <div class="card mb-3">
+          <div class="card-body">
+            <t t-raw="ticket.description or ''"/>
+          </div>
+        </div>
+        <t t-if="ticket.attachment_ids">
+          <h5>Attachments</h5>
+          <ul>
+            <t t-foreach="ticket.attachment_ids" t-as="att">
+              <li><a t-att-href="'/web/content/%s?download=true' % att.id"><t t-esc="att.name"/></a></li>
+            </t>
+          </ul>
+        </t>
+      </div>
+    </t>
+  </template>
+
+  <template id="portal_ticket_create" name="Create Support Ticket">
+    <t t-call="website.layout">
+      <div class="container my-5" id="nova-ticket-form">
+        <h1>Submit a Support Ticket</h1>
+        <form action="/my/support/tickets/new" method="post" enctype="multipart/form-data" class="mt-4">
+          <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label">Your Email</label>
+              <input class="form-control" type="email" name="email" t-att-value="request.env.user.email or ''" required="required"/>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Phone</label>
+              <input class="form-control" type="text" name="phone" t-att-value="request.env.user.phone or ''"/>
+            </div>
+            <div class="col-12">
+              <label class="form-label">Subject</label>
+              <input class="form-control" type="text" name="subject" placeholder="Short summary" required="required"/>
+            </div>
+            <div class="col-12">
+              <label class="form-label">Description</label>
+              <textarea class="form-control" name="description" rows="6" placeholder="Describe the issue…" required="required"></textarea>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Priority</label>
+              <select class="form-select" name="priority">
+                <option value="1" selected="selected">Normal</option>
+                <option value="0">Low</option>
+                <option value="2">High</option>
+                <option value="3">Urgent</option>
+              </select>
+            </div>
+            <div class="col-md-8">
+              <label class="form-label">Attachments</label>
+              <input class="form-control" type="file" name="attachments" multiple="multiple"/>
+            </div>
+          </div>
+          <div class="mt-4 d-flex gap-2">
+            <button class="btn btn-primary" type="submit">Submit Ticket</button>
+            <a class="btn btn-outline-secondary" href="/my/support/tickets">Cancel</a>
+          </div>
+        </form>
+      </div>
+    </t>
+  </template>
+</odoo>

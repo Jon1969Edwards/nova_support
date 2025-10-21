@@ -1,0 +1,15 @@
+<odoo>
+  <record id="mail_template_ticket_created" model="mail.template">
+    <field name="name">Nova Support: Ticket Created</field>
+    <field name="model_id" ref="model_nova_support_ticket"/>
+    <field name="subject">[${object.name}] Ticket received</field>
+    <field name="email_from">${(object.company_id.email or 'support@novatileandstone.com')|safe}</field>
+    <field name="email_to">${object.email or object.partner_id.email}</field>
+    <field name="body_html"><![CDATA[
+        <p>Hello ${object.partner_id.name or 'there'},</p>
+        <p>We've received your ticket <b>${object.name}</b> with subject <b>${object.subject}</b>.</p>
+        <p>We'll get back to you shortly. You can track it here: <a href="/my/support/tickets/${object.id}">Ticket link</a>.</p>
+        <p>— Nova Support</p>
+    ]]></field>
+  </record>
+</odoo>

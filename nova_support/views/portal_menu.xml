@@ -1,0 +1,7 @@
+<odoo>
+  <template id="website_menu" inherit_id="website.main_menu" name="Nova Support in navbar">
+    <xpath expr="//ul[contains(@class,'o_menu_sections') or contains(@class,'navbar-nav')]" position="inside">
+      <li class="nav-item"><a class="nav-link" href="/my/support/tickets">Support</a></li>
+    </xpath>
+  </template>
+</odoo>
